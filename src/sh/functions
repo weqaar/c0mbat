@@ -1,0 +1,72 @@
+#
+# Author: Weqaar Janjua
+#
+# Date: 07 JAN 2019
+#
+# Version: 0.1
+#
+# Description:
+# Functions for build script
+
+#Includes
+. ./src/sh/headers.h
+
+#Function Definitions
+_setenv() {
+    export PROJECT
+    export PRJROOT
+	export SUOVERRIDE
+    export TRUE
+    export FALSE
+    shopt -s xpg_echo
+    unset opt OPTARG OPTIND
+    OPTERR=0
+}
+
+_usage() {
+	_USAGE="\n$(basename $0) [-h] [-d] [-s] -- Zero-Configuration Management and Build Automorphic Tool. Copyrights @Weqaar Janjua\n
+	\n
+	where:\n
+    	-h  show help\n
+	    -d  deploy ${PROJECT} on local host: ${HOSTNAME}\n
+    	-s  override run as non-root requirement (default: do not allow run as root)\n
+        -v  run in debug mode\n
+	\n"
+	
+	echo ${_USAGE}
+}
+
+
+_check_dir_writable() {
+	if [ -w $1 ]; then 
+		return ${TRUE}
+	else
+		echo "ERROR: Dir $1 not writable\n"
+		return ${FALSE} 
+	fi
+}
+
+
+_check_dir_exist() {
+	if [ -d $1 ]; then
+    		return ${TRUE}
+	else
+    		return ${FALSE}
+	fi
+}
+
+
+_check_euid() {
+    if [ ${SUOVERRIDE} -eq 1 ]; then
+    	return ${TRUE}
+	elif [ `id -u` -ne 0 ]; then
+    	return ${TRUE}
+	else
+    	return ${FALSE}
+	fi
+}
+
+
+_clr_scr() {
+	clear
+}
