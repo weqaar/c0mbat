@@ -11,6 +11,10 @@ __pycache__/
 # C extensions
 *.so
 
+# Temp files - added by Weqaar
+.swp
+.tmp
+
 # Distribution / packaging
 .Python
 build/
