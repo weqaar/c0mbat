@@ -15,7 +15,7 @@
 _setenv() {
     export PROJECT
     export PRJROOT
-	export SUOVERRIDE
+    export SUOVERRIDE
     export TRUE
     export FALSE
     shopt -s xpg_echo
