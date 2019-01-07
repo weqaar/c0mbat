@@ -1,0 +1,33 @@
+
+Introduction
+************
+
+
+1. General Introduction
+=======================
+
+c0mbat is a Configuration Management tool developed as part of a
+screening exercise by Slack.
+
+c0mbat is short for Zero-Configuration Management and Build
+Automorphic Tool.
+
+
+2. Product
+==========
+
+c0mbat is primarily intended for massive Cloud Infrastructures.
+
+* Features
+
+  1. TODO1
+
+  2. TODO2
+
+
+3. Design
+=========
+
+
+4. Usage
+========
