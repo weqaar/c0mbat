@@ -5,7 +5,7 @@
 __author__ =    "Weqaar Janjua"
 __copyright__ = "Copyright (C) 2019 Weqaar Janjua / Slack"
 __revision__ =  "$Id$"
-__version__ =   "1.3"
+__version__ =   "1.6"
 __project__ =   "c0mbat"
 
 #imports
@@ -17,6 +17,7 @@ from packages.conf.configinit import *
 import packages.queue.initqueues as initqueues
 import packages.artifacts.initartificats as initartifacts
 import packages.inventory.initinventory as initinventory
+import packages.remoteaccess.ssh as sshObject
 import packages.globalvars as globalvars
 
 
@@ -76,14 +77,39 @@ def main():
 
 
     #get no. of hosts
+    _total_hosts = len(globalvars._inventory_cache.keys())
+
     #spawn thread for each host
 
+    for _host in globalvars._inventory_cache.keys():
+        _connection_object = _create_connection_object(_host)
+        _ret_status = sshObject.SSH(_connection_object)
+        print "SSH Status for host: " + str(_host) + " = " + str(_ret_status)
 
     globalvars._stats_logger.debug("Initializing c0mbat...")
 
     globalvars._stats_logger.debug("Process complete.")
     print "Process complete.\n"
     sys.exit(0)
+
+
+"""
+Connection Object
+   {   host:
+       username:
+       password:
+       key:
+   }
+"""
+def _create_connection_object(_host):
+        _host_inventory = globalvars._inventory_cache.get(_host)
+        _connection_object = {
+                "host"      : _host_inventory.get("Address"),
+                "username"  : _host_inventory.get("Auth").get("username"),
+                "password"  : _host_inventory.get("Auth").get("password"),
+                "key"       : _host_inventory.get("Auth").get("key")
+                }
+        return _connection_object
 
 
 def _init_process_manager():

@@ -20,13 +20,13 @@ _setenv() {
 }
 
 _usage() {
-	_USAGE="\n$(basename $0) [-h] [-d] [-s] -- Zero-Configuration Management and Build Automorphic Tool. Copyrights @Weqaar Janjua\n
+	_USAGE="\n$(basename $0) [-h] [-d] [-s] [-r] -- Zero-Configuration Management and Build Automorphic Tool. Copyrights @Weqaar Janjua\n
 	\n
 	where:\n
     	-h  show help\n
 	    -d  deploy ${PROJECT} on local host: ${HOSTNAME}\n
     	-s  override run as non-root requirement (default: do not allow run as root)\n
-        -v  run in debug mode\n
+        -r  update requirements.txt using pipreqs\n
 	\n"
 	
 	echo ${_USAGE}
