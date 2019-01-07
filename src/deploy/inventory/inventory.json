@@ -2,11 +2,11 @@
 	"Host-A" : {  
         "Address": "52.91.220.148",
         "Auth": { "username": "root", "password" : "foobarbaz" },
-        "Artifacts" : []
+        "Artifacts" : ["Apache", "php-app"]
     },
 	"Host-B" : {  
         "Address": "54.87.136.142",
         "Auth": { "username": "root", "password" : "foobarbaz" },
-        "Artifacts" : []
+        "Artifacts" : ["Apache", "php-app"]
     }
 }

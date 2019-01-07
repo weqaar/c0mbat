@@ -38,11 +38,9 @@ class SSH():
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             #Case-1: username = None, Key = None, Password = None|Valid
             if (_connection_object["username"] is None) and (_connection_object["key"] is None):
-                print "Case-1"
                 client.connect(_connection_object["host"], username=getpass.getuser())
             #Case-2: username = None, Key = Valid, Password = None|Valid
             elif (_connection_object["username"] is None) and (_connection_object["key"] is not None):
-                print "Case-2"
                 if ((os.path.exists(_connection_object["key"])) and (os.path.getsize(_connection_object["key"]) > 0)):
                     client.connect(_connection_object["host"], username=getpass.getuser(), key_filename=_connection_object["key"])
                 else:
@@ -50,12 +48,10 @@ class SSH():
                     return False
             #Case-3: username = Valid, Key = None, Password = None
             elif (_connection_object["username"] is not None) and (_connection_object["key"] is None) and (_connection_object["password"] is None):
-                print "Case-3"
                 client.connect(_connection_object["host"], username=_connection_object["username"])
                 #stdin, stdout, stderr = client.exec_command('uptime')
             #Case-4: username = Valid, Key = Valid, Password = None|Valid
             elif (_connection_object["username"] is not None) and (_connection_object["key"] is not None):
-                print "Case-4"
                 if ((os.path.exists(_connection_object["key"])) and (os.path.getsize(_connection_object["key"]) > 0)):
                     client.connect(_connection_object["host"], username=_connection_object["username"], key_filename=_connection_object["key"])
                 else:
@@ -64,7 +60,6 @@ class SSH():
                     return False
             #Case-5: username = Valid, Key = None, Password = Valid [default use case]
             elif (_connection_object["username"] is not None) and (_connection_object["key"] is None) and (_connection_object["password"] is not None):
-                print "Case-5"
                 client.connect(_connection_object["host"], username=_connection_object["username"], password=_connection_object["password"])
                 
             return True
