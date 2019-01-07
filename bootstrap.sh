@@ -2,12 +2,8 @@
 #
 # Author: Weqaar Janjua
 #
-# Date: 07 JAN 2019
-#
-# Version: 0.1
-#
 # Description:
-# Functions for Setup in specific runlevels
+# c0mbat bootstrap script
 
 #Includes
 . ./src/sh/functions
