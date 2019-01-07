@@ -23,6 +23,9 @@ while getopts "sdh" opt; do
         h )
             _usage;
             ;;
+        r )
+            pipreqs --force --use-local .
+            ;;
         \? )
             echo "Invalid option: -$OPTARG" 2>/dev/null;
             _usage;
