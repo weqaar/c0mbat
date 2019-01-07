@@ -19,11 +19,15 @@ _debug_logger                       = None
 #Queues
 _mp_queue0                          = None
 _mp_queue1                          = None
-#KeyValue DB Store
-_cache_db                           = None
-_cache_db_instance                  = None
-_cache_db_clear_on_init             = None
 #Shared DataStructs
-_shared_dict                        = None
+_inventory_dict                     = None
+_artifacts_dict                     = None
 _process_manager                    = None
+#Deployment
+_inventory_dir                      = None
+_inventory_file                     = None
+_inventory_cache                    = None
+_artifacts_dir                      = None
+_artifacts_file                     = None
+_artifacts_cache                    = None
 
