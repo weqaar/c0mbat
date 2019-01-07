@@ -1,12 +1,12 @@
 {
 	"Apache" : {  
-        "type": "apt",
+        "pkg-type": "apt",
 	    "pkg-name" : "apache2",
 	    "pre-deploy-trigger" : "apt-update",
 	    "post-deploy-trigger" : "restart"
     },
     "php-app" : {
-        "type": "manual",
+        "pkg-type": "manual",
         "metadata" : {
             "owner" : "www-data",
             "group" : "www-data",

@@ -8,5 +8,5 @@
         "Address": "54.87.136.142",
         "Auth": { "username": "root", "password" : "foobaraz" },
         "Artifacts" : []
-    },
+    }
 }

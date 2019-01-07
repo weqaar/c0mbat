@@ -2,13 +2,16 @@
 
 import packages.globalvars as globalvars
 import sys, traceback, inspect
-import json
+import os, sys, json
 
 
 class InitArtifacts():
 
     def __init__(self):
-        self.syncArtifacts()
+        if self.syncArtifacts() is False:
+            sys.exit(1)
+        if self.validateArtifacts() is False:
+            sys.exit(1)
 
     def syncArtifacts(self):
         try:
@@ -25,4 +28,13 @@ class InitArtifacts():
                                 "StackTrace: " + str(e)
             globalvars._error_logger.debug(_exception_struct)
             return False
-        
+
+    def validateArtifacts(self):
+        for _artifact in globalvars._artifacts_cache.keys():
+            if ("manual" in globalvars._artifacts_cache[_artifact].get("pkg-type")) and (not os.path.isdir(globalvars._artifacts_dir + "/" + _artifact)):
+                globalvars._error_logger.debug("Artifact not found: " + _artifact)
+                return False
+        return True
+
+    def getArtifactsHash(self):
+        pass

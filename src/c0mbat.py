@@ -5,17 +5,13 @@
 __author__ =    "Weqaar Janjua"
 __copyright__ = "Copyright (C) 2019 Weqaar Janjua / Slack"
 __revision__ =  "$Id$"
-__version__ =   "1.1"
+__version__ =   "1.3"
 __project__ =   "c0mbat"
 
 #imports
 from multiprocessing import Pool, Process, Event
 from multiprocessing.managers import BaseManager
-import time, os, psutil, subprocess, gc, sys, io, signal, itertools, re, errno
-import thread
-import argparse
-import json
-#from packages.runtime.sysinit import *
+import time, os, psutil, subprocess, sys, io, signal, argparse, json
 import packages.runtime.sysinit as sysinit
 from packages.conf.configinit import *
 import packages.queue.initqueues as initqueues
@@ -45,7 +41,6 @@ def main():
     _conf_object.runinit()
 
     #initialize System
-    #_sysinit = SysInit()
     sysinit.SysInit()
 
     #Initialize Queues|Topics
@@ -66,6 +61,7 @@ def main():
     initartifacts.InitArtifacts()
 
     print "Inventory Cache: " + json.dumps(globalvars._inventory_cache)
+    print "Artifacts Cache: " + json.dumps(globalvars._artifacts_cache)
 
     #Spawn Threads
     global plist
