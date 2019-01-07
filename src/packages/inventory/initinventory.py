@@ -8,7 +8,12 @@ import json
 class InitInventory():
 
     def __init__(self):
-        self.syncInventory()
+        if (self.syncInventory() is False):
+            sys.exit(1)
+
+        if (self.validateInventory() is False):
+            sys.exit(1)
+
 
     def syncInventory(self):
         try:
@@ -25,4 +30,11 @@ class InitInventory():
                                 "StackTrace: " + str(e)
             globalvars._error_logger.debug(_exception_struct)
             return False
-        
+
+    def validateInventory(self):
+        for _item in globalvars._inventory_cache.keys():
+            if (globalvars._inventory_cache.get(_item).get("Address") is None):
+                globalvars._error_logger.debug("Invalid Inventory Address: " + str(globalvars._inventory_cache.get(_item).get("Address")))
+                return False
+        return True
+

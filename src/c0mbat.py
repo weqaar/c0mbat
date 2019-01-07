@@ -22,9 +22,9 @@ import packages.globalvars as globalvars
 
 
 #variables
-_log_file_format = 'text/plain'
-_log_file_ext = '.txt'
-_json_objects_store = 'json_objects_store/'
+#_log_file_format = 'text/plain'
+#_log_file_ext = '.txt'
+#_json_objects_store = 'json_objects_store/'
 
 
 class ProcessManager(BaseManager): pass
@@ -75,16 +75,18 @@ def main():
 
     #spawn thread for each host
     if (_cli_args.validate):
+        print "\nValidating Inventory..."
         if (initinventory.InitInventory()):
             print "Inventory validation: " + "Passed"
-        else:
-            print "Inventory validation: " + "Failed"
+        print "\nValidating Artifacts..."
         if (initartifacts.InitArtifacts()):
             print "Artifacts validation: " + "Passed"
-        else:
-            print "Artifacts validation: " + "Failed"
+        print "\n"
         
     elif (_cli_args.listhosts):
+        #Initialize Inventory and Artifacts cache
+        initinventory.InitInventory()
+        initartifacts.InitArtifacts()
         print ("\nList of hosts in inventory:\n")
         for _host in globalvars._inventory_cache.keys():
             print _host
