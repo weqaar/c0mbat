@@ -5,7 +5,7 @@
 __author__ =    "Weqaar Janjua"
 __copyright__ = "Copyright (C) 2019 Weqaar Janjua / Slack"
 __revision__ =  "$Id$"
-__version__ =   "1.6"
+__version__ =   "1.8"
 __project__ =   "c0mbat"
 
 #imports
@@ -48,21 +48,15 @@ def main():
     initqueues._init_queues()
 
     _cli_parser = argparse.ArgumentParser(description='c0mbat cli: ' + sys.argv[0])
-    _cli_parser.add_argument('-v', '--validate', help='Validate deployment configurations\n')
-    _cli_parser.add_argument('-d', '--deploy', help='Trigger Deployment(s)')
-    _cli_parser.add_argument('-l', '--listhosts', help='List target hosts')
+    _cli_parser.add_argument('-v', '--validate', help='Validate deployment configurations', action='store_true')
+    _cli_parser.add_argument('-d', '--deploy', help='Trigger Deployment(s)', action='store_true')
+    _cli_parser.add_argument('-l', '--listhosts', help='List target hosts', action='store_true')
     _cli_args = _cli_parser.parse_args()
 
     #if (_cli_args.validate is None) or (_cli_args.deploy is None) or (_cli_args.listhosts is None):
     #	_cli_parser.print_help()
     #	sys.exit(1)
 
-    #Initialize Inventory and Artifacts cache
-    initinventory.InitInventory()
-    initartifacts.InitArtifacts()
-
-    print "Inventory Cache: " + json.dumps(globalvars._inventory_cache)
-    print "Artifacts Cache: " + json.dumps(globalvars._artifacts_cache)
 
     #Spawn Threads
     global plist
@@ -77,19 +71,35 @@ def main():
 
 
     #get no. of hosts
-    _total_hosts = len(globalvars._inventory_cache.keys())
+    #_total_hosts = len(globalvars._inventory_cache.keys())
 
     #spawn thread for each host
+    if (_cli_args.validate):
+        if (initinventory.InitInventory()):
+            print "Inventory validation: " + "Passed"
+        else:
+            print "Inventory validation: " + "Failed"
+        if (initartifacts.InitArtifacts()):
+            print "Artifacts validation: " + "Passed"
+        else:
+            print "Artifacts validation: " + "Failed"
+        
+    elif (_cli_args.listhosts):
+        print ("\nList of hosts in inventory:\n")
+        for _host in globalvars._inventory_cache.keys():
+            print _host
+        print "\n"
 
-    for _host in globalvars._inventory_cache.keys():
-        _connection_object = _create_connection_object(_host)
-        _ret_status = sshObject.SSH(_connection_object)
-        print "SSH Status for host: " + str(_host) + " = " + str(_ret_status)
-
-    globalvars._stats_logger.debug("Initializing c0mbat...")
+    elif (_cli_args.deploy):
+        #Initialize Inventory and Artifacts cache
+        initinventory.InitInventory()
+        initartifacts.InitArtifacts()
+        for _host in globalvars._inventory_cache.keys():
+            _connection_object = _create_connection_object(_host)
+            _ret_status = sshObject.SSH(_connection_object)
+            print "SSH Status for host: " + str(_host) + " = " + str(_ret_status)
 
     globalvars._stats_logger.debug("Process complete.")
-    print "Process complete.\n"
     sys.exit(0)
 
 
