@@ -2,13 +2,11 @@
 
 import packages.globalvars as globalvars
 import sys, traceback, inspect
-import os, sys, json, signal
-import paramiko
-from paramiko import SSHClient
-import getpass
+import os, sys, signal
 from multiprocessing.managers import BaseManager
 import packages.remoteaccess.ssh as sshObject
 import multiprocessing
+
 
 class ProcessManager(BaseManager): pass
 
@@ -37,14 +35,42 @@ class DeploymentThread():
         while True:
             if not globalvars._mp_queue0.empty():
                 _host = globalvars._mp_queue0.get()
+                globalvars._stats_logger.debug("Thread " + multiprocessing.current_process().name + " processing host: " + str(_host))
                 _connection_object = self._create_connection_object(_host)
                 _ssh_object = sshObject.SSH()
                 _ssh_link = _ssh_object.ssh_connect(_connection_object)
                 if _ssh_link is not False:
-                    _data, _error = _ssh_object._exec_cmd(_ssh_link, 'hostname')
-                #print "SSH Status for host: " + str(_host) + " = " + str(_ret_status)
-                print "SSH Status for host: " + str(_host) + " = " + str(_data) + ", " + str(_error)
-                break;
+                    _data, _error = _ssh_object._exec_cmd(_ssh_link, 'uptime')
+                    _artifacts_list = self._inventory_dict.get(_host).get("Artifacts")
+                    if (len(_artifacts_list) > 0):
+                        for _artifact in _artifacts_list:
+                            _artifact_object = self._artifacts_dict.get(_artifact)
+                            #APT handler
+                            if "apt" in _artifact_object.get("pkg-type"):
+                                if _artifact_object.get("pre-deploy-trigger") is not None:
+                                    _datax, _error = _ssh_object._exec_cmd(_ssh_link, \
+                                                    self._artifact_manager("apt", _artifact_object.get("pre-deploy-trigger")))
+                                _datax, _error = _ssh_object._exec_cmd(_ssh_link, \
+                                                _data = self._artifact_manager("apt", _artifact_object.get("pkg-action"), _data = \
+                                                _artifact_object.get("pkg-name")))
+                                if _artifact_object.get("post-deploy-trigger") is not None:
+                                    _datax, _error = _ssh_object._exec_cmd(_ssh_link, \
+                                                    _data = self._artifact_manager("service", _artifact_object.get("post-deploy-trigger"), \
+                                                    _artifact_object.get("service-name")))
+                            #MANUAL handler
+                            elif "manual" in _artifact_object.get("pkg-type"):
+                                if "install" in _artifact_object.get("pkg-action"):
+                                    #check if _artifact_object.get("pkg-path") exists
+                                    if _ssh_object._sftp_dir_check(_ssh_link, _artifact_object.get("pkg-path")) is False:
+                                        break
+                                    _ssh_object._scp_copy(_ssh_link, globalvars._artifacts_dir + "/" + _artifact, _artifact_object.get("pkg-path"))
+                                elif "remove" in _artifact_object.get("pkg-action"):
+                                    _ssh_object._exec_cmd(_ssh_link, _data = "rm -rf " + _artifact_object.get("pkg-path") + "/" + \
+                                                        _artifact_object.get("pkg-name"))
+                    _ssh_link.close()
+                else:
+                    globalvars._stats_logger.debug("Error in Thread " + multiprocessing.current_process().name + " processing host: " + str(_host))
+                break
 
     """
     Connection Object
@@ -58,10 +84,30 @@ class DeploymentThread():
         _host_inventory = self._inventory_dict.get(_host)
 
         _connection_object = {
-                "host"      : _host_inventory.get("Address"),
-                "username"  : _host_inventory.get("Auth").get("username"),
-                "password"  : _host_inventory.get("Auth").get("password"),
-                "key"       : _host_inventory.get("Auth").get("key")
+                "host"      : None if _host_inventory.get("Address") is None else _host_inventory.get("Address").strip(),
+                "username"  : None if _host_inventory.get("Auth").get("username") is None else _host_inventory.get("Auth").get("username").strip(),
+                "password"  : None if _host_inventory.get("Auth").get("password") is None else _host_inventory.get("Auth").get("password").strip(),
+                "key"       : None if _host_inventory.get("Auth").get("key") is None else _host_inventory.get("Auth").get("key").strip()
                 }
         return _connection_object
+
+    def _artifact_manager(self, _pkgmgr, _action, _data=None):
+        if "apt" in _pkgmgr:
+            if _data is not None:
+                if "remove" in _action.strip():
+                    _cmd = "apt-get -y " + "uninstall" + " " + _data.strip()
+                else: 
+                    _cmd = "apt-get -y " + _action.strip() + " " + _data.strip()
+            else:
+                _cmd = "apt-get -y " + _action.strip()
+        elif "service" in _pkgmgr:
+            _valid_service_ations = [x.strip() for x in globalvars._valid_service_ations.split(',')]
+            if str(_action.strip()) in _valid_service_ations:
+                _cmd = "service " + _data.strip() + " " + _action.strip()
+            else:
+                globalvars._error_logger.debug("Invalid service action: " + str(_action.strip()))
+                _cmd = None
+        else:
+            _cmd = None
+        return _cmd
 

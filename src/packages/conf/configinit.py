@@ -52,6 +52,9 @@ class SysConfig():
         globalvars._inventory_file = globalvars._config_obj.getSectionOption(_section, 'inventory_file')
         globalvars._artifacts_dir = globalvars._config_obj.getSectionOption(_section, 'artifacts_dir')
         globalvars._artifacts_file = globalvars._config_obj.getSectionOption(_section, 'artifacts_file')
+        #SERVICE
+        _section = 'SERVICE'
+        globalvars._valid_service_ations = globalvars._config_obj.getSectionOption(_section, 'valid_service_ations')
 
     def ipcdict(self):
         return globalvars._config_obj.getSectionsDict()

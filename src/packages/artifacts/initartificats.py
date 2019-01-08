@@ -31,9 +31,12 @@ class InitArtifacts():
 
     def validateArtifacts(self):
         for _artifact in globalvars._artifacts_cache.keys():
-            if ("manual" in globalvars._artifacts_cache[_artifact].get("pkg-type")) and (not os.path.isdir(globalvars._artifacts_dir + "/" + _artifact)):
-                globalvars._error_logger.debug("Artifact not found: " + _artifact)
-                return False
+            #if ("manual" in globalvars._artifacts_cache[_artifact].get("pkg-type")) and (not os.path.isdir(globalvars._artifacts_dir + "/" + _artifact)):
+            if ("manual" in globalvars._artifacts_cache[_artifact].get("pkg-type")):
+                if ("remove" not in globalvars._artifacts_cache[_artifact].get("pkg-action")):
+                    if (not os.path.isdir(globalvars._artifacts_dir + "/" + _artifact)):
+                        globalvars._error_logger.debug("Artifact not found: " + _artifact)
+                        return False
         return True
 
     def getArtifactsHash(self):

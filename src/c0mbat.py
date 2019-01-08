@@ -5,7 +5,7 @@
 __author__ =    "Weqaar Janjua"
 __copyright__ = "Copyright (C) 2019 Weqaar Janjua / Slack"
 __revision__ =  "$Id$"
-__version__ =   "2.1"
+__version__ =   "3.0"
 __project__ =   "c0mbat"
 
 #imports
@@ -72,7 +72,8 @@ def main():
         initartifacts.InitArtifacts()
         print ("\nList of hosts in inventory:\n")
         for _host in globalvars._inventory_cache.keys():
-            print str(_host)
+            print str(_host) + ": " + str(globalvars._inventory_cache.get(_host).get("Address")) + ", Disabled: " + \
+                  str(globalvars._inventory_cache.get(_host).get("disabled"))
         print "\n"
 
     elif (_cli_args.deploy):
@@ -89,14 +90,16 @@ def main():
         _process_manager.start()
         _init_process_manager()
 
-        for _host in globalvars._inventory_cache.keys():
-            globalvars._mp_queue0.put(_host)
-            _thread = Process(name='_thread_' + _host, target=workerthread.DeploymentThread)
-            _thread.start()
-            plist.append(_thread)
+        for _host in _inventory_dict.keys():
+            if _inventory_dict.get(_host).get("disabled") is False:
+                globalvars._mp_queue0.put(_host)
+                _thread = Process(name='_thread_' + _host, target=workerthread.DeploymentThread)
+                _thread.start()
+                plist.append(_thread)
 
-    for process in plist:
-        process.join()
+        if len(plist) > 0:
+            for process in plist:
+                process.join()
 
     globalvars._stats_logger.debug("Process complete.")
     sys.exit(0)

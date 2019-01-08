@@ -2,11 +2,34 @@
 	"Apache" : {  
         "pkg-type": "apt",
 	    "pkg-name" : "apache2",
-	    "pre-deploy-trigger" : "apt-update",
-	    "post-deploy-trigger" : "restart"
+        "pkg-action" : "install",
+	    "pre-deploy-trigger" : "update",
+	    "post-deploy-trigger" : "restart",
+	    "service-name" : "apache2"
+    },
+	"index.html" : {  
+        "pkg-type": "manual",
+	    "pkg-name" : "index.html",
+        "pkg-path" : "/var/www/html",
+        "pkg-action" : "remove"
+    },
+	"php" : {  
+        "pkg-type": "apt",
+	    "pkg-name" : "php",
+        "pkg-action" : "install",
+	    "pre-deploy-trigger" : null,
+	    "post-deploy-trigger" : "restart",
+	    "service-name" : "apache2"
     },
     "php-app" : {
         "pkg-type": "manual",
+        "pkg-action" : "install",
+        "pkg-path" : "/var/www/html",
+        "dependency" : { 
+	        "service-name" : "apache2",
+            "pre-deploy-trigger" : null,
+            "post-deploy-trigger" : "restart"
+        },
         "metadata" : {
         "owner" : "www-data",
         "group" : "www-data",

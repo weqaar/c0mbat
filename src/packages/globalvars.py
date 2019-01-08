@@ -30,4 +30,5 @@ _inventory_cache                    = None
 _artifacts_dir                      = None
 _artifacts_file                     = None
 _artifacts_cache                    = None
-
+#Service
+_valid_service_ations               = None

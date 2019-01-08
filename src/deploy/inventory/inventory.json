@@ -1,12 +1,20 @@
 {
 	"Host-A" : {  
-        "Address": "52.91.220.148",
-        "Auth": { "username": "root", "password" : "foobarbaz" },
-        "Artifacts" : ["Apache", "php-app"]
+        "Address" : "52.91.220.148",
+        "Auth" : { "username": "root", "password" : "foobarbaz" },
+        "disabled" : true,
+        "Artifacts" : ["Apache", "php", "php-app", "index.html"]
     },
 	"Host-B" : {  
-        "Address": "54.87.136.142",
-        "Auth": { "username": "root", "password" : "foobarbaz" },
-        "Artifacts" : ["Apache", "php-app"]
+        "Address" : "54.87.136.142",
+        "Auth" : { "username": "root", "password" : "foobarbaz" },
+        "disabled" : true,
+        "Artifacts" : ["Apache", "php", "php-app", "index.html" ]
+    },
+	"COTS" : {  
+        "Address" : "192.168.0.102",
+        "Auth" : { "username": "root", "password" : "sysadmin123" },
+        "disabled" : false,
+        "Artifacts" : ["Apache", "php", "php-app", "index.html"]
     }
 }
