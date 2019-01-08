@@ -8,9 +8,9 @@
     "php-app" : {
         "pkg-type": "manual",
         "metadata" : {
-            "owner" : "www-data",
-            "group" : "www-data",
-            "mode" : "744"
+        "owner" : "www-data",
+        "group" : "www-data",
+        "mode" : "744"
         }
     }
 }

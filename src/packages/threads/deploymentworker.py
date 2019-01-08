@@ -38,8 +38,12 @@ class DeploymentThread():
             if not globalvars._mp_queue0.empty():
                 _host = globalvars._mp_queue0.get()
                 _connection_object = self._create_connection_object(_host)
-                _ret_status = sshObject.SSH(_connection_object)
-                print "SSH Status for host: " + str(_host) + " = " + str(_ret_status)
+                _ssh_object = sshObject.SSH()
+                _ssh_link = _ssh_object.ssh_connect(_connection_object)
+                if _ssh_link is not False:
+                    _data, _error = _ssh_object._exec_cmd(_ssh_link, 'hostname')
+                #print "SSH Status for host: " + str(_host) + " = " + str(_ret_status)
+                print "SSH Status for host: " + str(_host) + " = " + str(_data) + ", " + str(_error)
                 break;
 
     """

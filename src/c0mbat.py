@@ -5,7 +5,7 @@
 __author__ =    "Weqaar Janjua"
 __copyright__ = "Copyright (C) 2019 Weqaar Janjua / Slack"
 __revision__ =  "$Id$"
-__version__ =   "2.0"
+__version__ =   "2.1"
 __project__ =   "c0mbat"
 
 #imports
