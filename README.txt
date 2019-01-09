@@ -20,6 +20,11 @@ Running application
 * cd <INSTALL_DIR>
 * python c0mbat.py -h
 
+Detailed Documentation
+----------------------
+* see README.txt - https://github.com/weqaar/c0mbat/tree/master/src
+* See PDF document - https://github.com/weqaar/c0mbat/blob/master/docs/build/latex/c0mbat-ProductDocumentation.pdf
+
 Docs
 ----
 * cd docs/build
