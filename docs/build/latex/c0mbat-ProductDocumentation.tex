@@ -28,8 +28,8 @@
 
 
 \title{c0mbat - Product Documentation}
-\date{Jan 07, 2019}
-\release{1.1}
+\date{Jan 09, 2019}
+\release{3.7a}
 \author{Weqaar Janjua}
 \newcommand{\sphinxlogo}{\includegraphics{slack-logo.png}\par}
 \renewcommand{\releasename}{Release}
@@ -142,36 +142,142 @@
 \chapter{Introduction}
 \label{Introduction:introduction}\label{Introduction::doc}\label{Introduction:c0mbat-product-documentation}\label{Introduction:id1}
 
-\section{1. General Introduction}
+\section{General Introduction}
 \label{Introduction:general-introduction}
-c0mbat is a Configuration Management tool developed as part of a screening exercise by \href{http://www.slack.com}{Slack}.
+c0mbat is a Configuration Management tool developed with \href{http://www.slack.com}{Slack}.
 
 c0mbat is short for Zero-Configuration Management and Build \href{https://en.wikipedia.org/wiki/Automorphic\_number}{Automorphic} Tool.
 
 
-\section{2. Product}
+\section{Product}
 \label{Introduction:product}
-c0mbat is primarily intended for massive Cloud Infrastructures.
+c0mbat is intended for configuration management in Cloud Infrastructures.
 \begin{itemize}
 \item {} 
 Features
 \begin{enumerate}
 \item {} 
-TODO1
+Multi-threaded (uses multiple cores as scheduled by the OS or by user i.e. numa utils)
 
 \item {} 
-TODO2
+Parallel deployment currently over SSH channel
+
+\item {} 
+Application wide configuration file: c0mbat.conf
+
+\item {} 
+APT package manager handling: install, uninstall (remove), update
+
+\item {} 
+Services handling: start, stop, restart, reload
+
+\item {} 
+Inventory and Artifacts handled seprately under dir ``deploy''
+\begin{enumerate}
+\item {} 
+deploy/artifacts
+
+\item {} 
+deploy/inventory
+
+\end{enumerate}
+
+\item {} 
+Idempotency with deployments: keeps MD5 Hashes as deployment cache for each host and it's artifact relationships
+\begin{enumerate}
+\item {} 
+Filesystem hash of individual artifacts under deploy/artifacts
+
+\item {} 
+Configuration hash of individual artifacts, defined in deploy/artifacts/artifacts.json
+
+\item {} 
+Hashes are maintained as cache under ``cache/cache.json'' that is built after initial run
+
+\item {} 
+In ideal situation this should be a distributed cache accessible over IP i.e. NoSQL DB, to allow multiple client's to sync
+
+\end{enumerate}
+
+\item {} 
+Two types of deployments currently supported
+\begin{enumerate}
+\item {} 
+APT package manager based
+
+\item {} 
+Manual
+
+\end{enumerate}
+
+\item {} 
+Manual type deployments support Permssions, this is specified optionally as artifact's metadata (see deploy/artifacts/artifacts.json)
+
+\item {} 
+Logging under dir ``logs/''
+
+\item {} 
+Cleanup runtime/transient data with the script ``clean.sh''. Note this cleans up the logs and cache as well.
 
 \end{enumerate}
 
 \end{itemize}
 
 
-\section{3. Design}
-\label{Introduction:design}
+\section{Availability of code}
+\label{Introduction:availability-of-code}
+Available on Github at \href{https://github.com/weqaar/c0mbat}{c0mbat repo}
 
-\section{4. Usage}
-\label{Introduction:usage}
+
+\section{Architectrure / Code Walk-through}
+\label{Introduction:architectrure-code-walk-through}
+
+\subsection{Structure}
+\label{Introduction:structure}
+Code is organized in this hierarchy
+
+\scalebox{0.500000}{\includegraphics[width=0.500\linewidth]{{c0mbat-l1}.png}}
+\begin{quote}
+\end{quote}
+
+Code is functionally divided as packages
+
+\scalebox{0.500000}{\includegraphics[width=0.500\linewidth]{{c0mbat-l2}.png}}
+\begin{quote}
+\end{quote}
+
+
+\subsection{Code re-usability}
+\label{Introduction:code-re-usability}
+Source code allows for easy reuse of various components
+\begin{enumerate}
+\item {} 
+All variables and objects are initailized as run-time from ``packages/conf/configinit.py''
+
+\item {} 
+Initialized objects are available at run-time in ``packages/globalvars.py''
+
+\item {} 
+Re-use is as simple as calling the desired object with globalvars.\textless{}object\textgreater{}
+\begin{enumerate}
+\item {} 
+Example: to log a debug message use - globalvars.\_stats\_logger.debug(``YOUR MESSAGE!'')
+
+\end{enumerate}
+
+\end{enumerate}
+
+
+\section{5. Usage}
+\label{Introduction:usage}\begin{enumerate}
+\item {} 
+Installation instructions \href{https://github.com/weqaar/c0mbat/blob/master/README.txt}{README.txt}
+
+\item {} 
+c0mbat provides a CLI Interface, run with: python c0mbat.py -h
+
+\end{enumerate}
+
 
 \chapter{Support}
 \label{Support:support}\label{Support::doc}\label{Support:id1}

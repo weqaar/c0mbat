@@ -4,12 +4,18 @@ c0mbat Product Documentation
 
 * Introduction
 
-  * 1. General Introduction
+  * General Introduction
 
-  * 2. Product
+  * Product
 
-  * 3. Design
+  * Availability of code
 
-  * 4. Usage
+  * Architectrure / Code Walk-through
+
+    * Structure
+
+    * Code re-usability
+
+  * 5. Usage
 
 * Support

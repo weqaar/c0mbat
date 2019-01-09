@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>c0mbat - Product Documentation v0.1</title>
+  <title>c0mbat - Product Documentation v3.7a</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                1.1
+                3.7a
               </div>
             
           
@@ -108,7 +108,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html#document-index">Docs</a> &raquo;</li>
       
-    <li>c0mbat - Product Documentation v0.1</li>
+    <li>c0mbat - Product Documentation v3.7a</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -126,26 +126,100 @@
 <span id="document-Introduction"></span><div class="section" id="introduction">
 <span id="id1"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="general-introduction">
-<h3>1. General Introduction<a class="headerlink" href="#general-introduction" title="Permalink to this headline">¶</a></h3>
-<p>c0mbat is a Configuration Management tool developed as part of a screening exercise by <a class="reference external" href="http://www.slack.com">Slack</a>.</p>
+<h3>General Introduction<a class="headerlink" href="#general-introduction" title="Permalink to this headline">¶</a></h3>
+<p>c0mbat is a Configuration Management tool developed with <a class="reference external" href="http://www.slack.com">Slack</a>.</p>
 <p>c0mbat is short for Zero-Configuration Management and Build <a class="reference external" href="https://en.wikipedia.org/wiki/Automorphic_number">Automorphic</a> Tool.</p>
 </div>
 <div class="section" id="product">
-<h3>2. Product<a class="headerlink" href="#product" title="Permalink to this headline">¶</a></h3>
-<p>c0mbat is primarily intended for massive Cloud Infrastructures.</p>
-<ul class="simple">
-<li>Features<ol class="arabic">
-<li>TODO1</li>
-<li>TODO2</li>
+<h3>Product<a class="headerlink" href="#product" title="Permalink to this headline">¶</a></h3>
+<p>c0mbat is intended for configuration management in Cloud Infrastructures.</p>
+<ul>
+<li><p class="first">Features</p>
+<ol class="arabic">
+<li><p class="first">Multi-threaded (uses multiple cores as scheduled by the OS or by user i.e. numa utils)</p>
+</li>
+<li><p class="first">Parallel deployment currently over SSH channel</p>
+</li>
+<li><p class="first">Application wide configuration file: c0mbat.conf</p>
+</li>
+<li><p class="first">APT package manager handling: install, uninstall (remove), update</p>
+</li>
+<li><p class="first">Services handling: start, stop, restart, reload</p>
+</li>
+<li><p class="first">Inventory and Artifacts handled seprately under dir &#8220;deploy&#8221;</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>deploy/artifacts</li>
+<li>deploy/inventory</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Idempotency with deployments: keeps MD5 Hashes as deployment cache for each host and it&#8217;s artifact relationships</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Filesystem hash of individual artifacts under deploy/artifacts</li>
+<li>Configuration hash of individual artifacts, defined in deploy/artifacts/artifacts.json</li>
+<li>Hashes are maintained as cache under &#8220;cache/cache.json&#8221; that is built after initial run</li>
+<li>In ideal situation this should be a distributed cache accessible over IP i.e. NoSQL DB, to allow multiple client&#8217;s to sync</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Two types of deployments currently supported</p>
+<ol class="arabic simple">
+<li>APT package manager based</li>
+<li>Manual</li>
+</ol>
+</li>
+<li><p class="first">Manual type deployments support Permssions, this is specified optionally as artifact&#8217;s metadata (see deploy/artifacts/artifacts.json)</p>
+</li>
+<li><p class="first">Logging under dir &#8220;logs/&#8221;</p>
+</li>
+<li><p class="first">Cleanup runtime/transient data with the script &#8220;clean.sh&#8221;. Note this cleans up the logs and cache as well.</p>
+</li>
 </ol>
 </li>
 </ul>
 </div>
-<div class="section" id="design">
-<h3>3. Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="availability-of-code">
+<h3>Availability of code<a class="headerlink" href="#availability-of-code" title="Permalink to this headline">¶</a></h3>
+<p>Available on Github at <a class="reference external" href="https://github.com/weqaar/c0mbat">c0mbat repo</a></p>
+</div>
+<div class="section" id="architectrure-code-walk-through">
+<h3>Architectrure / Code Walk-through<a class="headerlink" href="#architectrure-code-walk-through" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="structure">
+<h4>Structure<a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h4>
+<p>Code is organized in this hierarchy</p>
+<p><a class="reference internal" href="_images/c0mbat-l1.png"><img alt="l1tree" src="_images/c0mbat-l1.png" style="width: 25.0%; height: 159.0px;" /></a></p>
+<blockquote>
+<div></div></blockquote>
+<p>Code is functionally divided as packages</p>
+<p><a class="reference internal" href="_images/c0mbat-l2.png"><img alt="l2tree" src="_images/c0mbat-l2.png" style="width: 25.0%; height: 240.5px;" /></a></p>
+<blockquote>
+<div></div></blockquote>
+</div>
+<div class="section" id="code-re-usability">
+<h4>Code re-usability<a class="headerlink" href="#code-re-usability" title="Permalink to this headline">¶</a></h4>
+<p>Source code allows for easy reuse of various components</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>All variables and objects are initailized as run-time from &#8220;packages/conf/configinit.py&#8221;</li>
+<li>Initialized objects are available at run-time in &#8220;packages/globalvars.py&#8221;</li>
+<li>Re-use is as simple as calling the desired object with globalvars.&lt;object&gt;<ol class="arabic">
+<li>Example: to log a debug message use - globalvars._stats_logger.debug(&#8220;YOUR MESSAGE!&#8221;)</li>
+</ol>
+</li>
+</ol>
+</div></blockquote>
+</div>
 </div>
 <div class="section" id="usage">
-<h3>4. Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<h3>5. Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Installation instructions <a class="reference external" href="https://github.com/weqaar/c0mbat/blob/master/README.txt">README.txt</a></li>
+<li>c0mbat provides a CLI Interface, run with: python c0mbat.py -h</li>
+</ol>
+</div></blockquote>
 </div>
 </div>
 <span id="document-Support"></span><div class="section" id="support">
@@ -190,7 +264,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1',
+            VERSION:'3.7a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

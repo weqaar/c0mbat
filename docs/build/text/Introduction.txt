@@ -3,31 +3,117 @@ Introduction
 ************
 
 
-1. General Introduction
-=======================
+General Introduction
+====================
 
-c0mbat is a Configuration Management tool developed as part of a
-screening exercise by Slack.
+c0mbat is a Configuration Management tool developed with Slack.
 
 c0mbat is short for Zero-Configuration Management and Build
 Automorphic Tool.
 
 
-2. Product
-==========
+Product
+=======
 
-c0mbat is primarily intended for massive Cloud Infrastructures.
+c0mbat is intended for configuration management in Cloud
+Infrastructures.
 
 * Features
 
-  1. TODO1
+  1. Multi-threaded (uses multiple cores as scheduled by the OS or
+     by user i.e. numa utils)
 
-  2. TODO2
+  2. Parallel deployment currently over SSH channel
+
+  3. Application wide configuration file: c0mbat.conf
+
+  4. APT package manager handling: install, uninstall (remove),
+     update
+
+  5. Services handling: start, stop, restart, reload
+
+  6. Inventory and Artifacts handled seprately under dir "deploy"
+
+        1. deploy/artifacts
+
+        2. deploy/inventory
+
+  7. Idempotency with deployments: keeps MD5 Hashes as deployment
+     cache for each host and it's artifact relationships
+
+        1. Filesystem hash of individual artifacts under
+           deploy/artifacts
+
+        2. Configuration hash of individual artifacts, defined in
+           deploy/artifacts/artifacts.json
+
+        3. Hashes are maintained as cache under "cache/cache.json"
+           that is built after initial run
+
+        4. In ideal situation this should be a distributed cache
+           accessible over IP i.e. NoSQL DB, to allow multiple
+           client's to sync
+
+  8. Two types of deployments currently supported
+
+     1. APT package manager based
+
+     2. Manual
+
+  9. Manual type deployments support Permssions, this is specified
+     optionally as artifact's metadata (see
+     deploy/artifacts/artifacts.json)
+
+  10. Logging under dir "logs/"
+
+  11. Cleanup runtime/transient data with the script "clean.sh".
+      Note this cleans up the logs and cache as well.
 
 
-3. Design
-=========
+Availability of code
+====================
+
+Available on Github at c0mbat repo
 
 
-4. Usage
+Architectrure / Code Walk-through
+=================================
+
+
+Structure
+---------
+
+Code is organized in this hierarchy
+
+[image: l1tree][image]
+
+Code is functionally divided as packages
+
+[image: l2tree][image]
+
+
+Code re-usability
+-----------------
+
+Source code allows for easy reuse of various components
+
+   1. All variables and objects are initailized as run-time from
+      "packages/conf/configinit.py"
+
+   2. Initialized objects are available at run-time in
+      "packages/globalvars.py"
+
+   3. Re-use is as simple as calling the desired object with
+      globalvars.<object>
+
+      1. Example: to log a debug message use -
+         globalvars._stats_logger.debug("YOUR MESSAGE!")
+
+
+5. Usage
 ========
+
+   1. Installation instructions README.txt
+
+   2. c0mbat provides a CLI Interface, run with: python c0mbat.py
+      -h

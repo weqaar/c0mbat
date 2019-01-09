@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "C0MBAT" "1" "Jan 07, 2019" "1.1" "c0mbat - Product Documentation"
+.TH "C0MBAT" "1" "Jan 09, 2019" "3.7a" "c0mbat - Product Documentation"
 .SH NAME
 c0mbat \- c0mbat - Product Documentation
 .
@@ -31,26 +31,127 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
 .SH INTRODUCTION
-.SS 1. General Introduction
+.SS General Introduction
 .sp
-c0mbat is a Configuration Management tool developed as part of a screening exercise by \fI\%Slack\fP\&.
+c0mbat is a Configuration Management tool developed with \fI\%Slack\fP\&.
 .sp
 c0mbat is short for Zero\-Configuration Management and Build \fI\%Automorphic\fP Tool.
-.SS 2. Product
+.SS Product
 .sp
-c0mbat is primarily intended for massive Cloud Infrastructures.
+c0mbat is intended for configuration management in Cloud Infrastructures.
 .INDENT 0.0
 .IP \(bu 2
 Features
 .INDENT 2.0
+.IP 1. 4
+Multi\-threaded (uses multiple cores as scheduled by the OS or by user i.e. numa utils)
+.IP 2. 4
+Parallel deployment currently over SSH channel
+.IP 3. 4
+Application wide configuration file: c0mbat.conf
+.IP 4. 4
+APT package manager handling: install, uninstall (remove), update
+.IP 5. 4
+Services handling: start, stop, restart, reload
+.IP 6. 4
+Inventory and Artifacts handled seprately under dir "deploy"
+.INDENT 2.0
+.INDENT 3.5
+.INDENT 0.0
 .IP 1. 3
-TODO1
+deploy/artifacts
 .IP 2. 3
-TODO2
+deploy/inventory
 .UNINDENT
 .UNINDENT
-.SS 3. Design
-.SS 4. Usage
+.UNINDENT
+.IP 7. 4
+Idempotency with deployments: keeps MD5 Hashes as deployment cache for each host and it\(aqs artifact relationships
+.INDENT 2.0
+.INDENT 3.5
+.INDENT 0.0
+.IP 1. 3
+Filesystem hash of individual artifacts under deploy/artifacts
+.IP 2. 3
+Configuration hash of individual artifacts, defined in deploy/artifacts/artifacts.json
+.IP 3. 3
+Hashes are maintained as cache under "cache/cache.json" that is built after initial run
+.IP 4. 3
+In ideal situation this should be a distributed cache accessible over IP i.e. NoSQL DB, to allow multiple client\(aqs to sync
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.IP 8. 4
+Two types of deployments currently supported
+.INDENT 2.0
+.IP 1. 3
+APT package manager based
+.IP 2. 3
+Manual
+.UNINDENT
+.IP 9. 4
+Manual type deployments support Permssions, this is specified optionally as artifact\(aqs metadata (see deploy/artifacts/artifacts.json)
+.IP 10. 4
+Logging under dir "logs/"
+.IP 11. 4
+Cleanup runtime/transient data with the script "clean.sh". Note this cleans up the logs and cache as well.
+.UNINDENT
+.UNINDENT
+.SS Availability of code
+.sp
+Available on Github at \fI\%c0mbat repo\fP
+.SS Architectrure / Code Walk\-through
+.SS Structure
+.sp
+Code is organized in this hierarchy
+.sp
+[image: l1tree]
+[image]
+
+.INDENT 0.0
+.INDENT 3.5
+.UNINDENT
+.UNINDENT
+.sp
+Code is functionally divided as packages
+.sp
+[image: l2tree]
+[image]
+
+.INDENT 0.0
+.INDENT 3.5
+.UNINDENT
+.UNINDENT
+.SS Code re\-usability
+.sp
+Source code allows for easy reuse of various components
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP 1. 3
+All variables and objects are initailized as run\-time from "packages/conf/configinit.py"
+.IP 2. 3
+Initialized objects are available at run\-time in "packages/globalvars.py"
+.IP 3. 3
+Re\-use is as simple as calling the desired object with globalvars.<object>
+.INDENT 3.0
+.IP 1. 3
+Example: to log a debug message use \- globalvars._stats_logger.debug("YOUR MESSAGE!")
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SS 5. Usage
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP 1. 3
+Installation instructions \fI\%README.txt\fP
+.IP 2. 3
+c0mbat provides a CLI Interface, run with: python c0mbat.py \-h
+.UNINDENT
+.UNINDENT
+.UNINDENT
 .SH SUPPORT
 .sp
 \fBNOTE:\fP
