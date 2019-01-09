@@ -24,7 +24,7 @@ _usage() {
 	\n
 	where:\n
     	-h  show help\n
-	    -d  deploy ${PROJECT} on local host: ${HOSTNAME}\n
+	    -d  deploy ${PROJECT} - example: $0 -d /tmp/c0mbat\n
     	-s  override run as non-root requirement (default: do not allow run as root)\n
         -r  update requirements.txt using pipreqs\n
         -i  install python dependencies for the project - pip\n

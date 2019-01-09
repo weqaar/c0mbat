@@ -8,6 +8,11 @@
 #Includes
 . ./src/sh/functions
 
+#Variables
+_PROJECT=c0mBat
+_VERSION=3.7alpha
+_PIPLOG=${_PROJECT}_pip.log
+
 _clr_scr;
 
 _setenv;
@@ -19,13 +24,10 @@ then
     exit 1;
 fi
 
-while getopts "sdhri" opt; do
+while getopts "shrid:" opt; do
     case $opt in
         s )
             export SUOVERRIDE=1;
-            ;;
-        d )
-            echo "Deploying\n";
             ;;
         h )
             _usage;
@@ -34,7 +36,31 @@ while getopts "sdhri" opt; do
             pipreqs --force --use-local .
             ;;
         i )
-            sudo pip install -r requirements.txt
+            echo "Install python deps with pip..."
+            if [ `id -u` -eq 0 ]; then
+                pip install -r requirements.txt >>${_PIPLOG} 2>&1
+            else
+                sudo pip install -r requirements.txt >>${_PIPLOG} 2>&1
+            fi
+            echo "Done."
+            ;;
+        d )
+            [ -d ${OPTARG} ] || mkdir -p ${OPTARG}
+            if [ $? -eq 0 ]; then
+                cp -r src/* ${OPTARG}
+                mkdir ${OPTARG}/docs
+                cp -r docs/build/* ${OPTARG}/docs
+                echo "Install python deps with pip..."
+                if [ `id -u` -eq 0 ]; then
+                    pip install -r requirements.txt >>${_PIPLOG} 2>&1
+                else
+                    sudo pip install -r requirements.txt >>${_PIPLOG} 2>&1
+                fi
+                echo "\n${_PROJECT} ver.${_VERSION} installed in ${OPTARG}\n"
+                echo "Read documentation under ${OPTARG}/docs\n"
+            else
+                echo "directory " ${OPTARG} "is not writable, exiting."
+            fi
             ;;
         \? )
             echo "Invalid option: -$OPTARG" 2>/dev/null;
@@ -53,5 +79,4 @@ fi
 
 _check_dir_writable ${PRJROOT};
 
-#echo "${app_name} successfully built and deployed."
-
+#EOF
