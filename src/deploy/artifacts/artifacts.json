@@ -15,7 +15,7 @@
     },
 	"php" : {  
         "pkg-type": "apt",
-	    "pkg-name" : "php",
+	    "pkg-name" : "php5",
         "pkg-action" : "install",
 	    "pre-deploy-trigger" : null,
 	    "post-deploy-trigger" : "restart",

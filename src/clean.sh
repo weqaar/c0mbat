@@ -8,6 +8,6 @@ find . -name '*.debug.log' | xargs rm 2>/dev/null
 find . -name '*.error.log' | xargs rm 2>/dev/null
 find . -name '*.stats.log' | xargs rm 2>/dev/null
 rm -rf ./runtime/*
-rm -rf ./json_objects_store/*
+rm -rf ./cache/*
 echo "Done."
 

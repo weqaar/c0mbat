@@ -49,13 +49,14 @@ class DeploymentThread():
                     if (len(_artifacts_list) > 0):
                         for _artifact in _artifacts_list:
                             _artifact_object = self._artifacts_dict.get(_artifact)
-                            if self._hash_file_cache[_artifact].get("deployed_host") is None:
+                            if (self._hash_file_cache[_artifact].get("deployed_host") is None):
                                 self._hash_file_cache[_artifact]["deployed_host"] = []
                                 self._hash_file_cache[_artifact]["deployed_host"].append(_host)
-                            elif _host in self._hash_file_cache[_artifact].get("deployed_host"):
+                            elif (_host not in self._hash_file_cache[_artifact].get("deployed_host")):
+                                self._hash_file_cache[_artifact]["deployed_host"].append(_host)
+                            elif (_host in self._hash_file_cache[_artifact].get("deployed_host")):
                                 #Verify hash
                                 if (self._hash_file_cache[_artifact].get("conf_hash_update") is None) and (self._hash_file_cache[_artifact].get("fs_hash_update") is None):
-                                    globalvars._stats_logger.debug("Host is already up-to-date: " + str(_host))
                                     continue
                             #APT handler
                             if "apt" in _artifact_object.get("pkg-type"):
