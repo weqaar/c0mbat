@@ -19,7 +19,7 @@ then
     exit 1;
 fi
 
-while getopts "sdh" opt; do
+while getopts "sdhri" opt; do
     case $opt in
         s )
             export SUOVERRIDE=1;
@@ -32,6 +32,9 @@ while getopts "sdh" opt; do
             ;;
         r )
             pipreqs --force --use-local .
+            ;;
+        i )
+            sudo pip install -r requirements.txt
             ;;
         \? )
             echo "Invalid option: -$OPTARG" 2>/dev/null;
