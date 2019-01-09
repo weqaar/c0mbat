@@ -12,12 +12,13 @@ Requirements
 
 Install Dependencies
 --------------------
-run "bootstrap.sh" in root application folder
+* run "bootstrap.sh" for options
+* ./bootstrap.sh -d <INSTALL_DIR>
 
 Running application
 -------------------
-cd src/
-python c0mbat.py -h (CLI provides you with options)
+* cd <INSTALL_DIR>
+* python c0mbat.py -h
 
 Docs
 ----
@@ -32,4 +33,4 @@ Docs
 ** text -> make text
 ** man -> make man
 
-** If you run intp errors building any of these doc formats, most probably appropriate packages/libraraies aren't available on your system, install them first!
+** If you run into any error(s) building any of these doc formats, most probably appropriate packages/libraraies aren't available on your system, install them first!

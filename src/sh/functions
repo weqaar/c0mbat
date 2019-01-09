@@ -20,7 +20,7 @@ _setenv() {
 }
 
 _usage() {
-	_USAGE="\n$(basename $0) [-h] [-d] [-s] [-r] [i] -- Zero-Configuration Management and Build Automorphic Tool. Copyrights @Weqaar Janjua\n
+	_USAGE="\n$(basename $0) [-h] [-d] [-s] [-r] [-i] -- Zero-Configuration Management and Build Automorphic Tool. Copyrights @Weqaar Janjua\n
 	\n
 	where:\n
     	-h  show help\n
