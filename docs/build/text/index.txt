@@ -16,6 +16,6 @@ c0mbat Product Documentation
 
     * Code re-usability
 
-  * 5. Usage
+  * Usage
 
 * Support

@@ -91,7 +91,7 @@ Source code allows for easy reuse of various components
      #. Example: to log a debug message use - globalvars._stats_logger.debug("YOUR MESSAGE!")
   
 
-5. Usage
+Usage
 ========
 
   #. Installation instructions `README.txt <https://github.com/weqaar/c0mbat/blob/master/README.txt>`_ 

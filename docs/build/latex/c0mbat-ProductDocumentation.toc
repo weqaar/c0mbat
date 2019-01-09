@@ -6,5 +6,5 @@
 \contentsline {section}{\numberline {1.4}Architectrure / Code Walk-through}{2}{section.1.4}
 \contentsline {subsection}{\numberline {1.4.1}Structure}{2}{subsection.1.4.1}
 \contentsline {subsection}{\numberline {1.4.2}Code re-usability}{3}{subsection.1.4.2}
-\contentsline {section}{\numberline {1.5}5. Usage}{3}{section.1.5}
+\contentsline {section}{\numberline {1.5}Usage}{3}{section.1.5}
 \contentsline {chapter}{\numberline {2}Support}{5}{chapter.2}

@@ -110,8 +110,8 @@ Source code allows for easy reuse of various components
          globalvars._stats_logger.debug("YOUR MESSAGE!")
 
 
-5. Usage
-========
+Usage
+=====
 
    1. Installation instructions README.txt
 
