@@ -236,13 +236,13 @@ Available on Github at \href{https://github.com/weqaar/c0mbat}{c0mbat repo}
 \label{Introduction:structure}
 Code is organized in this hierarchy
 
-\scalebox{0.500000}{\includegraphics[width=0.500\linewidth]{{c0mbat-l1}.png}}
+\scalebox{0.500000}{\includegraphics[width=0.600\linewidth]{{c0mbat-l1}.png}}
 \begin{quote}
 \end{quote}
 
 Code is functionally divided as packages
 
-\scalebox{0.500000}{\includegraphics[width=0.500\linewidth]{{c0mbat-l2}.png}}
+\scalebox{0.500000}{\includegraphics[width=0.600\linewidth]{{c0mbat-l2}.png}}
 \begin{quote}
 \end{quote}
 
@@ -277,6 +277,118 @@ Installation instructions \href{https://github.com/weqaar/c0mbat/blob/master/REA
 c0mbat provides a CLI Interface, run with: python c0mbat.py -h
 
 \end{enumerate}
+
+
+\subsection{Inventory}
+\label{Introduction:inventory}
+Hosts or Nodes are defined in the inventory file ``inventory.json'' available under ``deploy/inventory/'' directory.
+
+Format is::
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Host}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{p}{\PYGZob{}}
+    \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Address}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{0.0.0.0}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+    \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Auth}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{p}{\PYGZob{}} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{username}\PYG{l+s}{\PYGZdq{}}\PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{root}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{password}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{r00t}\PYG{l+s}{\PYGZdq{}} \PYG{p}{\PYGZcb{}}\PYG{p}{,}
+    \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{disabled}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{n}{false}\PYG{p}{,}
+    \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Artifacts}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{p}{[}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{artifact\PYGZhy{}1}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{artifact\PYGZhy{}2}\PYG{l+s}{\PYGZdq{}}\PYG{p}{]}
+\PYG{p}{\PYGZcb{}}\PYG{p}{,}
+\end{Verbatim}
+
+
+\subsection{Artifacts}
+\label{Introduction:artifacts}
+Artifacts are the source files and/or directories that need deployment on a remote node.
+These are defined in the artifacts file ``artifacts.json'' available under ``deploy/artifacts/'' directory.
+
+Format is::
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Apache}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{p}{\PYGZob{}}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pkg\PYGZhy{}type}\PYG{l+s}{\PYGZdq{}}\PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{apt}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pkg\PYGZhy{}name}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{apache2}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pkg\PYGZhy{}action}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{install}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pre\PYGZhy{}deploy\PYGZhy{}trigger}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{update}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{post\PYGZhy{}deploy\PYGZhy{}trigger}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{restart}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{service\PYGZhy{}name}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{apache2}\PYG{l+s}{\PYGZdq{}}
+ \PYG{p}{\PYGZcb{}}\PYG{p}{,}
+ \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{php\PYGZhy{}app}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{p}{\PYGZob{}}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pkg\PYGZhy{}type}\PYG{l+s}{\PYGZdq{}}\PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{manual}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pkg\PYGZhy{}action}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{install}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pkg\PYGZhy{}path}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{/var/www/html}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{dependency}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{p}{\PYGZob{}}
+         \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{service\PYGZhy{}name}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{apache2}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+         \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pre\PYGZhy{}deploy\PYGZhy{}trigger}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{n}{null}\PYG{p}{,}
+         \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{post\PYGZhy{}deploy\PYGZhy{}trigger}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{restart}\PYG{l+s}{\PYGZdq{}}
+     \PYG{p}{\PYGZcb{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{metadata}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{p}{\PYGZob{}}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{owner}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{www\PYGZhy{}data}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{group}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{www\PYGZhy{}data}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{mode}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{644}\PYG{l+s}{\PYGZdq{}}
+     \PYG{p}{\PYGZcb{}}
+ \PYG{p}{\PYGZcb{}}
+\end{Verbatim}
+
+Artifacts of type ``manual'' must then be placed under filesystem path as under::
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{deploy}\PYG{o}{/}\PYG{n}{artifacts}\PYG{o}{/}\PYG{n}{php}\PYG{o}{\PYGZhy{}}\PYG{n}{app}\PYG{o}{/}
+\end{Verbatim}
+
+
+\subsection{Relationship between `Inventory' and `Artifacts'}
+\label{Introduction:relationship-between-inventory-and-artifacts}
+There is one-to-many relationship between Inventory and Artifact elements.
+
+\scalebox{0.500000}{\includegraphics[width=0.800\linewidth]{{one-to-many}.png}}
+\begin{quote}
+\end{quote}
+
+To clarify this relationship, a single node may relate to many Artifacts. As an example:
+\begin{itemize}
+\item {} 
+Inventory:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Zebra}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{p}{\PYGZob{}}
+    \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Address}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{10.10.10.10}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+    \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Auth}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{p}{\PYGZob{}} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{username}\PYG{l+s}{\PYGZdq{}}\PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{root}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{password}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{r00t}\PYG{l+s}{\PYGZdq{}} \PYG{p}{\PYGZcb{}}\PYG{p}{,}
+    \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{disabled}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{n}{false}\PYG{p}{,}
+    \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Artifacts}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{p}{[}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Apache}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{php\PYGZhy{}app}\PYG{l+s}{\PYGZdq{}}\PYG{p}{]}
+\PYG{p}{\PYGZcb{}}\PYG{p}{,}
+\end{Verbatim}
+
+\item {} 
+Artifacts:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Apache}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{p}{\PYGZob{}}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pkg\PYGZhy{}type}\PYG{l+s}{\PYGZdq{}}\PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{apt}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pkg\PYGZhy{}name}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{apache2}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pkg\PYGZhy{}action}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{install}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pre\PYGZhy{}deploy\PYGZhy{}trigger}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{update}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{post\PYGZhy{}deploy\PYGZhy{}trigger}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{restart}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{service\PYGZhy{}name}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{apache2}\PYG{l+s}{\PYGZdq{}}
+ \PYG{p}{\PYGZcb{}}\PYG{p}{,}
+ \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{php\PYGZhy{}app}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{p}{\PYGZob{}}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pkg\PYGZhy{}type}\PYG{l+s}{\PYGZdq{}}\PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{manual}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pkg\PYGZhy{}action}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{install}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pkg\PYGZhy{}path}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{/var/www/html}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{dependency}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{p}{\PYGZob{}}
+         \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{service\PYGZhy{}name}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{apache2}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+         \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{pre\PYGZhy{}deploy\PYGZhy{}trigger}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{n}{null}\PYG{p}{,}
+         \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{post\PYGZhy{}deploy\PYGZhy{}trigger}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{restart}\PYG{l+s}{\PYGZdq{}}
+     \PYG{p}{\PYGZcb{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{metadata}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{p}{\PYGZob{}}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{owner}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{www\PYGZhy{}data}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{group}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{www\PYGZhy{}data}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+     \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{mode}\PYG{l+s}{\PYGZdq{}} \PYG{p}{:} \PYG{l+s}{\PYGZdq{}}\PYG{l+s}{644}\PYG{l+s}{\PYGZdq{}}
+     \PYG{p}{\PYGZcb{}}
+ \PYG{p}{\PYGZcb{}}
+\end{Verbatim}
+
+\end{itemize}
+
+Host ``Zebra'' needs to be deployed Artifacts ``Apache'' and ``php-app'', thus it relates to both of them.
 
 
 \chapter{Support}

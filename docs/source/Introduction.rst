@@ -66,7 +66,7 @@ Code is organized in this hierarchy
 |l1tree|
 
   .. |l1tree| image:: images/c0mbat-l1.png
-           :width: 50 %
+           :width: 60 %
            :scale: 50 %
 
 
@@ -75,7 +75,7 @@ Code is functionally divided as packages
 |l2tree|
 
   .. |l2tree| image:: images/c0mbat-l2.png
-           :width: 50 %
+           :width: 60 %
            :scale: 50 %
 
 
@@ -96,4 +96,111 @@ Usage
 
   #. Installation instructions `README.txt <https://github.com/weqaar/c0mbat/blob/master/README.txt>`_ 
   #. c0mbat provides a CLI Interface, run with: python c0mbat.py -h
+
+
+Inventory
+---------
+
+Hosts or Nodes are defined in the inventory file "inventory.json" available under "deploy/inventory/" directory.
+
+Format is:::
+
+    "Host" : {
+        "Address" : "0.0.0.0",
+        "Auth" : { "username": "root", "password" : "r00t" },
+        "disabled" : false,
+        "Artifacts" : ["artifact-1", "artifact-2"]
+    },
+
+
+Artifacts
+---------
+
+Artifacts are the source files and/or directories that need deployment on a remote node. 
+These are defined in the artifacts file "artifacts.json" available under "deploy/artifacts/" directory.
+
+Format is:::
+
+   "Apache" : {
+        "pkg-type": "apt",
+        "pkg-name" : "apache2",
+        "pkg-action" : "install",
+        "pre-deploy-trigger" : "update",
+        "post-deploy-trigger" : "restart",
+        "service-name" : "apache2"
+    },
+    "php-app" : {
+        "pkg-type": "manual",
+        "pkg-action" : "install",
+        "pkg-path" : "/var/www/html",
+        "dependency" : {
+            "service-name" : "apache2",
+            "pre-deploy-trigger" : null,
+            "post-deploy-trigger" : "restart"
+        },
+        "metadata" : {
+        "owner" : "www-data",
+        "group" : "www-data",
+        "mode" : "644"
+        }
+    }
+
+
+Artifacts of type "manual" must then be placed under filesystem path as under:::
+
+   deploy/artifacts/php-app/
+
+
+Relationship between 'Inventory' and 'Artifacts'
+------------------------------------------------
+
+There is one-to-many relationship between Inventory and Artifact elements.
+
+|one-to-many|
+
+  .. |one-to-many| image:: images/one-to-many.png
+                   :width: 80 %
+                   :scale: 50 %
+
+
+To clarify this relationship, a single node may relate to many Artifacts. As an example:
+
+* Inventory::
+
+    "Zebra" : {
+        "Address" : "10.10.10.10",
+        "Auth" : { "username": "root", "password" : "r00t" },
+        "disabled" : false,
+        "Artifacts" : ["Apache", "php-app"]
+    },  
+
+
+* Artifacts::
+
+   "Apache" : {
+        "pkg-type": "apt",
+        "pkg-name" : "apache2",
+        "pkg-action" : "install",
+        "pre-deploy-trigger" : "update",
+        "post-deploy-trigger" : "restart",
+        "service-name" : "apache2"
+    },
+    "php-app" : {
+        "pkg-type": "manual",
+        "pkg-action" : "install",
+        "pkg-path" : "/var/www/html",
+        "dependency" : {
+            "service-name" : "apache2",
+            "pre-deploy-trigger" : null,
+            "post-deploy-trigger" : "restart"
+        },
+        "metadata" : {
+        "owner" : "www-data",
+        "group" : "www-data",
+        "mode" : "644"
+        }
+    }
+
+
+Host "Zebra" needs to be deployed Artifacts "Apache" and "php-app", thus it relates to both of them.
 

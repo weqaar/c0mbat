@@ -13,8 +13,6 @@ _PROJECT=c0mBat
 _VERSION=3.7alpha
 _PIPLOG=${_PROJECT}_pip.log
 
-_clr_scr;
-
 _setenv;
 
 if [ -z "$1" ]

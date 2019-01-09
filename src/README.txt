@@ -1,4 +1,32 @@
 
+c0mbat Product Documentation
+****************************
+
+* Introduction
+
+  * General Introduction
+
+  * Product
+
+  * Availability of code
+
+  * Architectrure / Code Walk-through
+
+    * Structure
+
+    * Code re-usability
+
+  * Usage
+
+    * Inventory
+
+    * Artifacts
+
+    * Relationship between 'Inventory' and 'Artifacts'
+
+* Support
+
+
 Introduction
 ************
 
@@ -222,3 +250,9 @@ Artifacts. As an example:
 
 Host "Zebra" needs to be deployed Artifacts "Apache" and "php-app",
 thus it relates to both of them.
+
+
+Support
+*******
+
+Note: Contact weqaar.janjua@gmail.com

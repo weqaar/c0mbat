@@ -18,4 +18,10 @@ c0mbat Product Documentation
 
   * Usage
 
+    * Inventory
+
+    * Artifacts
+
+    * Relationship between 'Inventory' and 'Artifacts'
+
 * Support

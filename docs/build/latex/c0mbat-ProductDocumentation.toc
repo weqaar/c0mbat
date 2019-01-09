@@ -7,4 +7,7 @@
 \contentsline {subsection}{\numberline {1.4.1}Structure}{2}{subsection.1.4.1}
 \contentsline {subsection}{\numberline {1.4.2}Code re-usability}{3}{subsection.1.4.2}
 \contentsline {section}{\numberline {1.5}Usage}{3}{section.1.5}
-\contentsline {chapter}{\numberline {2}Support}{5}{chapter.2}
+\contentsline {subsection}{\numberline {1.5.1}Inventory}{3}{subsection.1.5.1}
+\contentsline {subsection}{\numberline {1.5.2}Artifacts}{4}{subsection.1.5.2}
+\contentsline {subsection}{\numberline {1.5.3}Relationship between `Inventory' and `Artifacts'}{4}{subsection.1.5.3}
+\contentsline {chapter}{\numberline {2}Support}{7}{chapter.2}

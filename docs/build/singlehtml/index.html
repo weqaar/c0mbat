@@ -189,11 +189,11 @@
 <div class="section" id="structure">
 <h4>Structure<a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h4>
 <p>Code is organized in this hierarchy</p>
-<p><a class="reference internal" href="_images/c0mbat-l1.png"><img alt="l1tree" src="_images/c0mbat-l1.png" style="width: 25.0%; height: 159.0px;" /></a></p>
+<p><a class="reference internal" href="_images/c0mbat-l1.png"><img alt="l1tree" src="_images/c0mbat-l1.png" style="width: 30.0%; height: 159.0px;" /></a></p>
 <blockquote>
 <div></div></blockquote>
 <p>Code is functionally divided as packages</p>
-<p><a class="reference internal" href="_images/c0mbat-l2.png"><img alt="l2tree" src="_images/c0mbat-l2.png" style="width: 25.0%; height: 240.5px;" /></a></p>
+<p><a class="reference internal" href="_images/c0mbat-l2.png"><img alt="l2tree" src="_images/c0mbat-l2.png" style="width: 30.0%; height: 240.5px;" /></a></p>
 <blockquote>
 <div></div></blockquote>
 </div>
@@ -220,6 +220,102 @@
 <li>c0mbat provides a CLI Interface, run with: python c0mbat.py -h</li>
 </ol>
 </div></blockquote>
+<div class="section" id="inventory">
+<h4>Inventory<a class="headerlink" href="#inventory" title="Permalink to this headline">¶</a></h4>
+<p>Hosts or Nodes are defined in the inventory file &#8220;inventory.json&#8221; available under &#8220;deploy/inventory/&#8221; directory.</p>
+<p>Format is::</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="s">&quot;Host&quot;</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">&quot;Address&quot;</span> <span class="p">:</span> <span class="s">&quot;0.0.0.0&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Auth&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s">&quot;username&quot;</span><span class="p">:</span> <span class="s">&quot;root&quot;</span><span class="p">,</span> <span class="s">&quot;password&quot;</span> <span class="p">:</span> <span class="s">&quot;r00t&quot;</span> <span class="p">},</span>
+    <span class="s">&quot;disabled&quot;</span> <span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+    <span class="s">&quot;Artifacts&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="s">&quot;artifact-1&quot;</span><span class="p">,</span> <span class="s">&quot;artifact-2&quot;</span><span class="p">]</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="artifacts">
+<h4>Artifacts<a class="headerlink" href="#artifacts" title="Permalink to this headline">¶</a></h4>
+<p>Artifacts are the source files and/or directories that need deployment on a remote node.
+These are defined in the artifacts file &#8220;artifacts.json&#8221; available under &#8220;deploy/artifacts/&#8221; directory.</p>
+<p>Format is::</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="s">&quot;Apache&quot;</span> <span class="p">:</span> <span class="p">{</span>
+     <span class="s">&quot;pkg-type&quot;</span><span class="p">:</span> <span class="s">&quot;apt&quot;</span><span class="p">,</span>
+     <span class="s">&quot;pkg-name&quot;</span> <span class="p">:</span> <span class="s">&quot;apache2&quot;</span><span class="p">,</span>
+     <span class="s">&quot;pkg-action&quot;</span> <span class="p">:</span> <span class="s">&quot;install&quot;</span><span class="p">,</span>
+     <span class="s">&quot;pre-deploy-trigger&quot;</span> <span class="p">:</span> <span class="s">&quot;update&quot;</span><span class="p">,</span>
+     <span class="s">&quot;post-deploy-trigger&quot;</span> <span class="p">:</span> <span class="s">&quot;restart&quot;</span><span class="p">,</span>
+     <span class="s">&quot;service-name&quot;</span> <span class="p">:</span> <span class="s">&quot;apache2&quot;</span>
+ <span class="p">},</span>
+ <span class="s">&quot;php-app&quot;</span> <span class="p">:</span> <span class="p">{</span>
+     <span class="s">&quot;pkg-type&quot;</span><span class="p">:</span> <span class="s">&quot;manual&quot;</span><span class="p">,</span>
+     <span class="s">&quot;pkg-action&quot;</span> <span class="p">:</span> <span class="s">&quot;install&quot;</span><span class="p">,</span>
+     <span class="s">&quot;pkg-path&quot;</span> <span class="p">:</span> <span class="s">&quot;/var/www/html&quot;</span><span class="p">,</span>
+     <span class="s">&quot;dependency&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s">&quot;service-name&quot;</span> <span class="p">:</span> <span class="s">&quot;apache2&quot;</span><span class="p">,</span>
+         <span class="s">&quot;pre-deploy-trigger&quot;</span> <span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+         <span class="s">&quot;post-deploy-trigger&quot;</span> <span class="p">:</span> <span class="s">&quot;restart&quot;</span>
+     <span class="p">},</span>
+     <span class="s">&quot;metadata&quot;</span> <span class="p">:</span> <span class="p">{</span>
+     <span class="s">&quot;owner&quot;</span> <span class="p">:</span> <span class="s">&quot;www-data&quot;</span><span class="p">,</span>
+     <span class="s">&quot;group&quot;</span> <span class="p">:</span> <span class="s">&quot;www-data&quot;</span><span class="p">,</span>
+     <span class="s">&quot;mode&quot;</span> <span class="p">:</span> <span class="s">&quot;644&quot;</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<p>Artifacts of type &#8220;manual&#8221; must then be placed under filesystem path as under::</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">deploy</span><span class="o">/</span><span class="n">artifacts</span><span class="o">/</span><span class="n">php</span><span class="o">-</span><span class="n">app</span><span class="o">/</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="relationship-between-inventory-and-artifacts">
+<h4>Relationship between &#8216;Inventory&#8217; and &#8216;Artifacts&#8217;<a class="headerlink" href="#relationship-between-inventory-and-artifacts" title="Permalink to this headline">¶</a></h4>
+<p>There is one-to-many relationship between Inventory and Artifact elements.</p>
+<p><a class="reference internal" href="_images/one-to-many.png"><img alt="one-to-many" src="_images/one-to-many.png" style="width: 40.0%; height: 22.5px;" /></a></p>
+<blockquote>
+<div></div></blockquote>
+<p>To clarify this relationship, a single node may relate to many Artifacts. As an example:</p>
+<ul>
+<li><p class="first">Inventory:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="s">&quot;Zebra&quot;</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">&quot;Address&quot;</span> <span class="p">:</span> <span class="s">&quot;10.10.10.10&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Auth&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s">&quot;username&quot;</span><span class="p">:</span> <span class="s">&quot;root&quot;</span><span class="p">,</span> <span class="s">&quot;password&quot;</span> <span class="p">:</span> <span class="s">&quot;r00t&quot;</span> <span class="p">},</span>
+    <span class="s">&quot;disabled&quot;</span> <span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+    <span class="s">&quot;Artifacts&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="s">&quot;Apache&quot;</span><span class="p">,</span> <span class="s">&quot;php-app&quot;</span><span class="p">]</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Artifacts:</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="s">&quot;Apache&quot;</span> <span class="p">:</span> <span class="p">{</span>
+     <span class="s">&quot;pkg-type&quot;</span><span class="p">:</span> <span class="s">&quot;apt&quot;</span><span class="p">,</span>
+     <span class="s">&quot;pkg-name&quot;</span> <span class="p">:</span> <span class="s">&quot;apache2&quot;</span><span class="p">,</span>
+     <span class="s">&quot;pkg-action&quot;</span> <span class="p">:</span> <span class="s">&quot;install&quot;</span><span class="p">,</span>
+     <span class="s">&quot;pre-deploy-trigger&quot;</span> <span class="p">:</span> <span class="s">&quot;update&quot;</span><span class="p">,</span>
+     <span class="s">&quot;post-deploy-trigger&quot;</span> <span class="p">:</span> <span class="s">&quot;restart&quot;</span><span class="p">,</span>
+     <span class="s">&quot;service-name&quot;</span> <span class="p">:</span> <span class="s">&quot;apache2&quot;</span>
+ <span class="p">},</span>
+ <span class="s">&quot;php-app&quot;</span> <span class="p">:</span> <span class="p">{</span>
+     <span class="s">&quot;pkg-type&quot;</span><span class="p">:</span> <span class="s">&quot;manual&quot;</span><span class="p">,</span>
+     <span class="s">&quot;pkg-action&quot;</span> <span class="p">:</span> <span class="s">&quot;install&quot;</span><span class="p">,</span>
+     <span class="s">&quot;pkg-path&quot;</span> <span class="p">:</span> <span class="s">&quot;/var/www/html&quot;</span><span class="p">,</span>
+     <span class="s">&quot;dependency&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s">&quot;service-name&quot;</span> <span class="p">:</span> <span class="s">&quot;apache2&quot;</span><span class="p">,</span>
+         <span class="s">&quot;pre-deploy-trigger&quot;</span> <span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+         <span class="s">&quot;post-deploy-trigger&quot;</span> <span class="p">:</span> <span class="s">&quot;restart&quot;</span>
+     <span class="p">},</span>
+     <span class="s">&quot;metadata&quot;</span> <span class="p">:</span> <span class="p">{</span>
+     <span class="s">&quot;owner&quot;</span> <span class="p">:</span> <span class="s">&quot;www-data&quot;</span><span class="p">,</span>
+     <span class="s">&quot;group&quot;</span> <span class="p">:</span> <span class="s">&quot;www-data&quot;</span><span class="p">,</span>
+     <span class="s">&quot;mode&quot;</span> <span class="p">:</span> <span class="s">&quot;644&quot;</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Host &#8220;Zebra&#8221; needs to be deployed Artifacts &#8220;Apache&#8221; and &#8220;php-app&#8221;, thus it relates to both of them.</p>
+</div>
 </div>
 </div>
 <span id="document-Support"></span><div class="section" id="support">

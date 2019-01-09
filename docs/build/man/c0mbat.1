@@ -152,6 +152,144 @@ c0mbat provides a CLI Interface, run with: python c0mbat.py \-h
 .UNINDENT
 .UNINDENT
 .UNINDENT
+.SS Inventory
+.sp
+Hosts or Nodes are defined in the inventory file "inventory.json" available under "deploy/inventory/" directory.
+.sp
+Format is::
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"Host" : {
+    "Address" : "0.0.0.0",
+    "Auth" : { "username": "root", "password" : "r00t" },
+    "disabled" : false,
+    "Artifacts" : ["artifact\-1", "artifact\-2"]
+},
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Artifacts
+.sp
+Artifacts are the source files and/or directories that need deployment on a remote node.
+These are defined in the artifacts file "artifacts.json" available under "deploy/artifacts/" directory.
+.sp
+Format is::
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"Apache" : {
+     "pkg\-type": "apt",
+     "pkg\-name" : "apache2",
+     "pkg\-action" : "install",
+     "pre\-deploy\-trigger" : "update",
+     "post\-deploy\-trigger" : "restart",
+     "service\-name" : "apache2"
+ },
+ "php\-app" : {
+     "pkg\-type": "manual",
+     "pkg\-action" : "install",
+     "pkg\-path" : "/var/www/html",
+     "dependency" : {
+         "service\-name" : "apache2",
+         "pre\-deploy\-trigger" : null,
+         "post\-deploy\-trigger" : "restart"
+     },
+     "metadata" : {
+     "owner" : "www\-data",
+     "group" : "www\-data",
+     "mode" : "644"
+     }
+ }
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Artifacts of type "manual" must then be placed under filesystem path as under::
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+deploy/artifacts/php\-app/
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Relationship between \(aqInventory\(aq and \(aqArtifacts\(aq
+.sp
+There is one\-to\-many relationship between Inventory and Artifact elements.
+.sp
+[image: one-to-many]
+[image]
+
+.INDENT 0.0
+.INDENT 3.5
+.UNINDENT
+.UNINDENT
+.sp
+To clarify this relationship, a single node may relate to many Artifacts. As an example:
+.INDENT 0.0
+.IP \(bu 2
+Inventory:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"Zebra" : {
+    "Address" : "10.10.10.10",
+    "Auth" : { "username": "root", "password" : "r00t" },
+    "disabled" : false,
+    "Artifacts" : ["Apache", "php\-app"]
+},
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Artifacts:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"Apache" : {
+     "pkg\-type": "apt",
+     "pkg\-name" : "apache2",
+     "pkg\-action" : "install",
+     "pre\-deploy\-trigger" : "update",
+     "post\-deploy\-trigger" : "restart",
+     "service\-name" : "apache2"
+ },
+ "php\-app" : {
+     "pkg\-type": "manual",
+     "pkg\-action" : "install",
+     "pkg\-path" : "/var/www/html",
+     "dependency" : {
+         "service\-name" : "apache2",
+         "pre\-deploy\-trigger" : null,
+         "post\-deploy\-trigger" : "restart"
+     },
+     "metadata" : {
+     "owner" : "www\-data",
+     "group" : "www\-data",
+     "mode" : "644"
+     }
+ }
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Host "Zebra" needs to be deployed Artifacts "Apache" and "php\-app", thus it relates to both of them.
 .SH SUPPORT
 .sp
 \fBNOTE:\fP
