@@ -36,6 +36,7 @@ class SysConfig():
         globalvars._ipc_key = globalvars._config_obj.getSectionOption(_section, 'ipc_key')
         globalvars._ipc_host = globalvars._config_obj.getSectionOption(_section, 'ipc_host')
         globalvars._ipc_port = int(globalvars._config_obj.getSectionOption(_section, 'ipc_port'))
+        globalvars._ssh_timeout = int(globalvars._config_obj.getSectionOption(_section, 'ssh_timeout'))
         #SYSLOG
         _section = 'SYSLOG'
         globalvars._logs_dir = globalvars._config_obj.getSectionOption(_section, 'syslogdir')
@@ -52,6 +53,8 @@ class SysConfig():
         globalvars._inventory_file = globalvars._config_obj.getSectionOption(_section, 'inventory_file')
         globalvars._artifacts_dir = globalvars._config_obj.getSectionOption(_section, 'artifacts_dir')
         globalvars._artifacts_file = globalvars._config_obj.getSectionOption(_section, 'artifacts_file')
+        globalvars._cache_dir = globalvars._config_obj.getSectionOption(_section, 'cache_dir')
+        globalvars._cache_file = globalvars._config_obj.getSectionOption(_section, 'cache_file')
         #SERVICE
         _section = 'SERVICE'
         globalvars._valid_service_ations = globalvars._config_obj.getSectionOption(_section, 'valid_service_ations')

@@ -35,28 +35,28 @@ class SSH():
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             #Case-1
             if (_connection_object["username"] is None) and (_connection_object["key"] is None):
-                client.connect(_connection_object["host"], username=getpass.getuser())
+                client.connect(_connection_object["host"], username=getpass.getuser(), timeout=globalvars._ssh_timeout)
             #Case-2
             elif (_connection_object["username"] is None) and (_connection_object["key"] is not None):
                 if ((os.path.exists(_connection_object["key"])) and (os.path.getsize(_connection_object["key"]) > 0)):
-                    client.connect(_connection_object["host"], username=getpass.getuser(), key_filename=_connection_object["key"])
+                    client.connect(_connection_object["host"], username=getpass.getuser(), key_filename=_connection_object["key"], timeout=globalvars._ssh_timeout)
                 else:
                     globalvars._error_logger.debug("SSH: Invalid ssh key: " + str(_connection_object["key"]) + ", host: " + str(_connection_object["host"]))
                     return False
             #Case-3
             elif (_connection_object["username"] is not None) and (_connection_object["key"] is None) and (_connection_object["password"] is None):
-                client.connect(_connection_object["host"], username=_connection_object["username"])
+                client.connect(_connection_object["host"], username=_connection_object["username"], timeout=globalvars._ssh_timeout)
             #Case-4
             elif (_connection_object["username"] is not None) and (_connection_object["key"] is not None):
                 if ((os.path.exists(_connection_object["key"])) and (os.path.getsize(_connection_object["key"]) > 0)):
-                    client.connect(_connection_object["host"], username=_connection_object["username"], key_filename=_connection_object["key"])
+                    client.connect(_connection_object["host"], username=_connection_object["username"], key_filename=_connection_object["key"], timeout=globalvars._ssh_timeout)
                 else:
                     globalvars._error_logger.debug("SSH: Invalid username/ssh key, username: " + str(_connection_object["username"]) + ", key: " + \
                                                    str(_connection_object["key"]) + ", host: " + str(_connection_object["host"]))
                     return False
             #Case-5
             elif (_connection_object["username"] is not None) and (_connection_object["key"] is None) and (_connection_object["password"] is not None):
-                client.connect(_connection_object["host"], username=_connection_object["username"], password=_connection_object["password"])
+                client.connect(_connection_object["host"], username=_connection_object["username"], password=_connection_object["password"], timeout=globalvars._ssh_timeout)
             return client
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -94,7 +94,7 @@ class SSH():
             scp = SCPClient(_ssh_connection_instance.get_transport(), progress=self._progress_stdout)
             _currdir = os.getcwd()
             os.chdir(_src)
-            scp.put(".", recursive=True, remote_path=_dst) 
+            scp.put(".", recursive=True, remote_path=_dst)
             scp.close()
             os.chdir(_currdir)
             return True
@@ -108,8 +108,10 @@ class SSH():
             globalvars._error_logger.debug(_exception_struct)
             return False
 
+
     def _progress_stdout(self, filename, size, sent):
         print ("%s\'s progress: %.2f%%   \r" % (filename, float(sent)/float(size)*100))
+
 
     def _sftp_dir_check(self, _ssh_connection_instance, _data):
         try:

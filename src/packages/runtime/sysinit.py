@@ -58,6 +58,8 @@ class SysInit():
             os.mkdir(globalvars._runtime_dir)
         if not os.path.exists(globalvars._logs_dir):
             os.mkdir(globalvars._logs_dir)
+        if not os.path.exists(globalvars._cache_dir):
+            os.mkdir(globalvars._cache_dir)
         with io.open(globalvars._runtime_dir + "/" + globalvars._pidfile, 'w', encoding="ascii") as _f:
             _f.write(unicode(str(os.getpid()) + "\n"))
             _f.close()

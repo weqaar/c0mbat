@@ -5,7 +5,7 @@
 __author__ =    "Weqaar Janjua"
 __copyright__ = "Copyright (C) 2019 Weqaar Janjua / Slack"
 __revision__ =  "$Id$"
-__version__ =   "3.0"
+__version__ =   "3.5"
 __project__ =   "c0mbat"
 
 #imports
@@ -20,6 +20,7 @@ import packages.inventory.initinventory as initinventory
 import packages.remoteaccess.ssh as sshObject
 import packages.globalvars as globalvars
 import packages.threads.deploymentworker as workerthread
+import packages.runtime.cache as hashcache
 
 
 class ProcessManager(BaseManager): pass
@@ -84,6 +85,7 @@ def main():
         _artifacts_dict = dict()
         _inventory_dict = globalvars._inventory_cache.copy()
         _artifacts_dict = globalvars._artifacts_cache.copy()
+        hashcache.Cache()
         ProcessManager.register('getdict_inventory', callable=lambda:_inventory_dict)
         ProcessManager.register('getdict_artifacts', callable=lambda:_artifacts_dict)
         _process_manager = ProcessManager(address=(globalvars._ipc_host, globalvars._ipc_port), authkey=globalvars._ipc_key)

@@ -11,6 +11,7 @@ _ipc_host                           = None
 _ipc_port                           = None
 _firmware_dir                       = None
 _process_pool                       = None
+_ssh_timeout                        = None
 #Logs
 _logs_dir                           = None
 _stats_logger                       = None
@@ -30,5 +31,7 @@ _inventory_cache                    = None
 _artifacts_dir                      = None
 _artifacts_file                     = None
 _artifacts_cache                    = None
+_cache_dir                          = None
+_cache_file                         = None
 #Service
 _valid_service_ations               = None

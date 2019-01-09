@@ -2,7 +2,7 @@
 
 import packages.globalvars as globalvars
 import sys, traceback, inspect
-import os, sys, signal
+import os, sys, signal, json
 from multiprocessing.managers import BaseManager
 import packages.remoteaccess.ssh as sshObject
 import multiprocessing
@@ -19,8 +19,13 @@ class DeploymentThread():
         self._process_manager.connect()
         self._inventory_dict = self._process_manager.getdict_inventory()
         self._artifacts_dict = self._process_manager.getdict_artifacts()
+
+        with open(globalvars._cache_dir + "/" + globalvars._cache_file, 'r') as _hash_file:
+            self._hash_file_cache = json.load(_hash_file)
+        _hash_file.close()
+
         self._init_sighandlers()
-        self._thread_run()
+        self._thread_run(self._hash_file_cache)
 
     def _init_sighandlers(self):
         signal.signal(signal.SIGUSR1, self.signalHandler)
@@ -31,7 +36,7 @@ class DeploymentThread():
                                         str(multiprocessing.current_process().name) + ", " + str(multiprocessing.current_process().pid))
         sys.exit(0)
 
-    def _thread_run(self):
+    def _thread_run(self, _hash_file_cache):
         while True:
             if not globalvars._mp_queue0.empty():
                 _host = globalvars._mp_queue0.get()
@@ -40,11 +45,18 @@ class DeploymentThread():
                 _ssh_object = sshObject.SSH()
                 _ssh_link = _ssh_object.ssh_connect(_connection_object)
                 if _ssh_link is not False:
-                    _data, _error = _ssh_object._exec_cmd(_ssh_link, 'uptime')
                     _artifacts_list = self._inventory_dict.get(_host).get("Artifacts")
                     if (len(_artifacts_list) > 0):
                         for _artifact in _artifacts_list:
                             _artifact_object = self._artifacts_dict.get(_artifact)
+                            if self._hash_file_cache[_artifact].get("deployed_host") is None:
+                                self._hash_file_cache[_artifact]["deployed_host"] = []
+                                self._hash_file_cache[_artifact]["deployed_host"].append(_host)
+                            elif _host in self._hash_file_cache[_artifact].get("deployed_host"):
+                                #Verify hash
+                                if (self._hash_file_cache[_artifact].get("conf_hash_update") is None) and (self._hash_file_cache[_artifact].get("fs_hash_update") is None):
+                                    globalvars._stats_logger.debug("Host is already up-to-date: " + str(_host))
+                                    continue
                             #APT handler
                             if "apt" in _artifact_object.get("pkg-type"):
                                 if _artifact_object.get("pre-deploy-trigger") is not None:
@@ -57,6 +69,7 @@ class DeploymentThread():
                                     _datax, _error = _ssh_object._exec_cmd(_ssh_link, \
                                                     _data = self._artifact_manager("service", _artifact_object.get("post-deploy-trigger"), \
                                                     _artifact_object.get("service-name")))
+                            
                             #MANUAL handler
                             elif "manual" in _artifact_object.get("pkg-type"):
                                 if "install" in _artifact_object.get("pkg-action"):
@@ -64,10 +77,19 @@ class DeploymentThread():
                                     if _ssh_object._sftp_dir_check(_ssh_link, _artifact_object.get("pkg-path")) is False:
                                         break
                                     _ssh_object._scp_copy(_ssh_link, globalvars._artifacts_dir + "/" + _artifact, _artifact_object.get("pkg-path"))
+                                    #Permissions from metadata
+                                    _perms = _artifact_object.get("metadata").get("mode")
+                                    if (_perms is not None):
+                                        _ssh_object._exec_cmd(_ssh_link, _data = "chmod -R " + _perms + " " + _artifact_object.get("pkg-path") + \
+                                                              "/*") 
                                 elif "remove" in _artifact_object.get("pkg-action"):
                                     _ssh_object._exec_cmd(_ssh_link, _data = "rm -rf " + _artifact_object.get("pkg-path") + "/" + \
                                                         _artifact_object.get("pkg-name"))
                     _ssh_link.close()
+                    #Update hash file
+                    with open(globalvars._cache_dir + "/" + globalvars._cache_file, 'w') as _f:
+                        json.dump(self._hash_file_cache, _f, sort_keys = True, indent = 4, ensure_ascii=True)
+                    _f.close()
                 else:
                     globalvars._stats_logger.debug("Error in Thread " + multiprocessing.current_process().name + " processing host: " + str(_host))
                 break
