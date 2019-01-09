@@ -17,7 +17,6 @@ _setenv;
 
 if [ -z "$1" ]
 then
-    echo "Invalid option: -$OPTARG" 2>/dev/null;
     _usage;
     exit 1;
 fi
