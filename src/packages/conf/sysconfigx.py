@@ -2,7 +2,7 @@
 
 import ConfigParser
 
-class Parser_Functions():
+class Parser_Functions(object):
 
     _instance = None
     global conf_file
@@ -10,7 +10,7 @@ class Parser_Functions():
     
     def __new__(cls, *args, **kwargs):
     	if not cls._instance:
-	    cls._instance = super(Singleton, cls).__new__(cls, *args, **kwargs)
+	    cls._instance = super(Parser_Functions, cls).__new__(cls, *args, **kwargs)
 	return cls._instance
 
     def __init__(self, _config_file):
