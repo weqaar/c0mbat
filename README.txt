@@ -1,7 +1,7 @@
 c0mbat - Zero-Configuration Management and Build Automorphic Tool
 
 Author: Weqaar Janjua <weqaar.janjua@gmail.com>
-Version: 3.7a
+Version: 3.7b
 
 
 Requirements
